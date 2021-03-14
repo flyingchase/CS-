@@ -876,43 +876,216 @@ public class Hero{
 
 
 
+**枚举enmu:**
+
+使得枚举的switch中的case限定在`enmu`规定的values内
+
+```java
+public class Hero {
+    public enum Season {
+        a,b,c,d
+    }
+
+    public static void main(String[] args) {
+        Season s=Season.a;
+        switch (s) {
+            case a:
+                System.out.println("aaa");
+                break;
+        
+            default:System.out.println("hhh");
+                break;
+        }
+    }
+    
+}
+```
+
+
+
+### 07 接口与继承
+
+------
+
+#### 07.1 接口
+
+相当于约定, 实现接口必须提供接口声明总的方法
+
+使用关键字`implements` 
+
+```java
+	public interface AD {
+        public void physicAttack();
+        
+    }
+
+    public class ADHero extends Hero implements AD {
+        public void physicAttack(){
+            System.out.println("攻击");
+    }
+```
+
+
+
+#### 07.2 override 方法的重写/覆盖---隐藏
+
+------
+
+子类继承父类后对对象方法的重写 调用override的方法则会执行重写的方法
+
+`suoer`显式调用父类的构造器/属性/方法——避免重写/隐藏
+
+
+
+#### 07.3 多态
+
+------
+
+0. 操作符的多态——>`+`可以作为算术运算/字符串连接
+1. **类的多态——>** 父类引用指向子类对象
+
+#### 07.4 Object类
+
+------
+
+- 是所有类的父类,子类默认继承`Object`类
+
+- `Object`提供`toString()`方法 返回当前对象的字符串表达  
+
+  ```java
+  public class Hero {
+      String name;
+      float hp;
+      float armor;
+      int moveSpeed;
+      public String toString(){
+          return name;
+      }        
+  
+      public static void main(String[] args) {
+          Hero h = new Hero();
+          h.name="zhou";
+          System.out.println(h.toString());
+      //直接打印对象则默认为Object.toString()返回
+          System.out.println(h);
+      }
+  }
+  ```
+
+  
+
+- 对象没有任何引用时, JVM自动调用`finalize()`方法进行**垃圾回收**
+
+- `equals()`判断对象内容是否相同
+
+  ```java
+  public class Hero {
+  
+      public String name;
+      protected float hp;
+  
+  
+      public boolean equals(Object o) {
+          if(o instanceof Hero) {
+              Hero h = (Hero) o;
+              return this.hp==h.hp;
+          }
+          return false;
+      }
+  
+      public static void main(String[] args) {
+          Hero h1=new Hero();
+          h1.hp=300;
+          Hero h2=new Hero();
+          h2.hp=400;
+          Hero h3=new Hero();
+          h3.hp=300;
+          
+          System.out.println(h1.equals(h2));	//FALSE
+          System.out.println(h1.equals(h3));	//TRUE
+      }
+  }
+  ```
+
+- `==` 判断两个引用指向同一个对象否
+
+- `hashCode()`
+
+- `wait() notify() notifyAll() `线程同步方法
+
+- `getClass()` 返回对象的类对象
+
+  ```java
+  
+  ```
+
+  
 
 
 
 
 
+#### 07.5 final
+
+------
+
+- **修饰类:**
+  - 类被修饰成final时表示无法被继承
+- **修饰方法:**
+  - 无法被重写
+- **修饰基本变量:**
+  - 只能一次赋值
+- **修饰引用:**
+  - 只能一次指向对象机会
 
 
 
 
 
+#### 07.6 抽象类 abstract
+
+------
+
+类中的方法没有实现体 是一个空方法 
+
+类中存在抽象方法时 必须被声明为抽象类
+
+`public abstract class Hero{ public abstract void attack();}	` 
+
+不存在抽象方法时候 也可声明为抽象类——>无法被实例化
+
+ `Hero h = new Hero() `
+
+**抽象类和接口的区别:**
+
+区别1：
+
+子类只能继承一个抽象类，不能继承多个
+子类可以实现**多个**接口
+区别2：
+抽象类可以定义
+public,protected,package,private
+静态和非静态属性
+final和非final属性
+但是接口中声明的属性，只能是
+public
+静态
+final的
+即便没有显式的声明
 
 
 
+#### 07.7 内部类
 
+------
 
+非静态内部类 静态内部类匿名类 本地类 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- **非静态内部类:**
+  - 实例化语法 `new 外部类().内部类()` 建立在外部类存在的基础上 可以直接访问外部类的`private`实例属性
+- **静态内部类:**
+- **匿名类:**
+- **本地类:**
 
 
 
