@@ -2,9 +2,11 @@
 
 # Java基础
 
+------
+
+## 00 前言
 
 
- 
 
 **JDK&JRE&JVM：**
 
@@ -107,9 +109,9 @@ java没有无符号类型 unsigned
 
 
 
+## 01 变量
 
-
-*变量：*	包括类型、名称、值； declared
+​	包括类型、名称、值； declared
 
 | 类型      | 大小   | 默认值     | 值范围                                      |
 | :-------- | :----- | :--------- | :------------------------------------------ |
@@ -152,7 +154,7 @@ if (x=0) 	//编译错误 整数表达式x=0无法转换成boolean 但CPP中可�
 
 
 
-**类型转换：**	
+### 01.1 类型转换：	
 
 <img src="/Users/qlzhou/Library/Application Support/typora-user-images/image-20210105144730535.png" alt="image-20210105144730535" style="zoom:33%;" />
 
@@ -221,7 +223,7 @@ if (x=0) 	//编译错误 整数表达式x=0无法转换成boolean 但CPP中可�
 
 
 
-### 装箱和拆箱
+### 01.2 装箱和拆箱
 
 Java 语言中的每种原语类型都有一个对应的 JDK 类，如表 4 所示。
 
@@ -311,7 +313,7 @@ String characterNumeric = boxedValue.toString();
 
 
 
-**运算符：**
+## 02 运算符
 
 算术、赋值、比较（关系）、 逻辑、位运算、三元运算符
 
@@ -339,15 +341,16 @@ String characterNumeric = boxedValue.toString();
 
 
 
-- **运算符级别：**
-  - ![image-20210105150626168](/Users/qlzhou/Library/Application Support/typora-user-images/image-20210105150626168.png)
-  - ![image-20210105150647485](/Users/qlzhou/Library/Application Support/typora-user-images/image-20210105150647485.png)
+### 02.1 运算符级别
+
+- ![image-20210105150626168](/Users/qlzhou/Library/Application Support/typora-user-images/image-20210105150626168.png)
+- ![image-20210105150647485](/Users/qlzhou/Library/Application Support/typora-user-images/image-20210105150647485.png)
 
 
 
 
 
-**string——引用数据类型：**
+## 03 字符串
 
 每个用双引号""括起来的字符串都是String类的实例
 
@@ -441,7 +444,7 @@ String类没有提供直接修改字符串的方法 String对象又称为*不可
 
 
 
-**输入输出:**
+## 04 输入输出
 
 - 输入流:
 
@@ -518,7 +521,7 @@ String类没有提供直接修改字符串的方法 String对象又称为*不可
 
 
 
-#### 控制结构
+## 05 控制结构
 
 ------
 
@@ -527,7 +530,7 @@ String类没有提供直接修改字符串的方法 String对象又称为*不可
 - 不同的for循环中可相同的变量,for语句内部的变量无法在循环体之外使用;
 - switch 多重选择, 无匹配的case则执行存在的default;
 
-#### 大数
+##### 大数
 
 ------
 
@@ -539,7 +542,7 @@ String类没有提供直接修改字符串的方法 String对象又称为*不可
 
 
 
-**Array数组：**
+## 06 Array数组
 
 - 三部曲：声明数组名称和类型；创建数组；初始化元素
 
@@ -558,10 +561,19 @@ int[] a={1,2,3,4,5};
 ```
 
 - 数字数组初始化自动为0, boolean类型为false, 对象数组为nil;
-
+- 允许**二维数组**每行长度不同 
+  - 数组名.length——>行数
 - **增强循环遍历foreach:**
 
 `for(var : collection) statement` 使用var暂存集合collection中的每个元素并执行
+
+- 常用`API`
+
+  `System.arrayCopy(source,startIndexInSource,dest,startIndexInDest,n);` 从source数组的第startIndexInSource的n个元素到dest数组的startIndexInDest
+
+  `Array.sort(数组名)`   需要导入java.util包
+
+
 
 
 
@@ -689,9 +701,11 @@ final int money = 100; //定义之后money就一直是100，不能被修改
 
 
 
-### 类和引用
+## 07 类和对象
 
 ------
+
+`instanceof`关键字判断对象属于哪个类
 
 引用的概念，如果一个变量的类型是 类类型，而非基本类型，那么该变量又叫做引用。
 
@@ -779,6 +793,8 @@ public class base_learning {
 
 构造器也可以重载
 
+子类的构造方法调用父类的多个构造方法中的指定使用`super`完成
+
 ```java
 public class Hero{
     String name;
@@ -823,6 +839,8 @@ public class Hero{
 
 - **this**调用其他构造器 
 
+  - 必须放在方法的首行 super也必须在首行 溢出无法共存
+  
   ```java
   	 public Hero(String name){
           System.out.println("此处调用一个参数的构造器");
@@ -895,7 +913,7 @@ public class Hero{
 
 
 
-#### 类和对象——访问修饰符、类属性、类方法
+#### 类和对象——访问修饰符、类属性/静态属性、类方法/静态方法 (用 static修饰的属性和方法 )
 
 ------
 
@@ -949,6 +967,8 @@ public class Hero{
 
 静态方法/类方法: 访问类方法无需建立在存在对象的基础上
 
+
+
 ​				访问同样是两种方式 对象访问和类访问调用 
 
 ```java
@@ -993,15 +1013,23 @@ public class Hero {
 }
 ```
 
-
-
-### 07 接口与继承
+####  `main`方法
 
 ------
 
-#### 07.1 接口
+- JVM调用类的main方法——>`public`
+- 执行main方法无需创建对象——>`static`
+- `String[] args` 表示接受运行时参数
+
+## 08 接口与继承
+
+------
+
+#### 08.1 接口
 
 相当于约定, 实现接口必须提供接口声明总的方法
+
+
 
 使用关键字`implements` 
 
@@ -1019,7 +1047,7 @@ public class Hero {
 
 
 
-#### 07.2 override 方法的重写/覆盖---隐藏
+#### 08.2 override 方法的重写/覆盖---隐藏
 
 ------
 
@@ -1029,14 +1057,14 @@ public class Hero {
 
 
 
-#### 07.3 多态
+#### 08.3 多态
 
 ------
 
 0. 操作符的多态——>`+`可以作为算术运算/字符串连接
 1. **类的多态——>** 父类引用指向子类对象
 
-#### 07.4 Object类
+#### 08.4 Object类
 
 ------
 
@@ -1119,7 +1147,7 @@ public class Hero {
 
 
 
-#### 07.5 final
+#### 08.5 final
 
 ------
 
@@ -1136,21 +1164,25 @@ public class Hero {
 
 
 
-#### 07.6 抽象类 abstract
+#### 08.6 抽象类 abstract
 
 ------
 
-类中的方法没有实现体 是一个空方法 
+​	类中的方法没有实现体 是一个空方法 
 
-类中存在抽象方法时 必须被声明为抽象类
+​	类中存在抽象方法时 必须被声明为抽象类
 
 `public abstract class Hero{ public abstract void attack();}	` 
 
-不存在抽象方法时候 也可声明为抽象类——>无法被实例化
+​	不存在抽象方法时候 也可声明为抽象类——>无法被实例化
 
  `Hero h = new Hero() `
 
+​	抽象类不可直接产生对象实例化
+
 **抽象类和接口的区别:**
+
+接口数据成员必须初始化,接口内方法必须声明为abstract
 
 区别1：
 
@@ -1169,22 +1201,179 @@ final的
 
 
 
-#### 07.7 内部类
+#### 08.7 内部类
 
 ------
 
 非静态内部类 静态内部类匿名类 本地类 
 
+
+
 - **非静态内部类:**
+  
   - 实例化语法 `new 外部类().内部类()` 建立在外部类存在的基础上 可以直接访问外部类的`private`实例属性
-- **静态内部类:**
+  
+  - 非静态内部类可以直接调用外部类的属性
+  
+  - ```java
+    public class Hero{
+        private String name;
+        float hp;
+        int moveSpeed;
+        //非静态内部类——>只有外部类Hero存在时才有意义
+        class battleScore{
+            int kill;
+        }
+        public static void main(String){
+            Hero g = new Hero();
+            //实例化对象
+    		h.name="wo";
+            //实例化内部类
+            battleScore bb =g.battleScore();
+            
+            
+        }
+    }
+    ```
+  
+    
+  
+- **静态内部类:** 
+
+  - 直接实例化 `外部类.内部类 * = new 外部类.内部类`
+
+  - ```java
+    public class Hero{
+        ...
+        static class EnemyCrystal{
+            int hp=500;
+            public void chechVictory(){
+                if(hp==0) Hero.battlewin();
+                //静态内部类不可访问外部Hero的属性name
+            }
+        }
+        public static void main(String[] args){
+            //实例化静态类可以直接不存在Hero的对象基础
+            Hero.EnemyCrystal c= new Hero.Enemyrystal();
+        }
+    }
+    ```
+
+    
+
 - **匿名类:**
+
 - **本地类:**
 
 
 
 
 
+## 09 包和访问权限
+
+### 00 package & import
+
+------
+
+jar命令可以打包
+
+import导入不在同一包内其他类
+
+
+
+
+
+## 10 多线程
+
+### 00 进程和线程
+
+------
+
+
+
+- 进程是程序的动态执行过程 由于CPU时间片使得多进程同时运行
+
+- 线程是进程内部单一的顺序控制流
+
+- 区别:
+
+  - 线程和进程都是并发的基本单位
+  - 线程是比进程更小的执行单元
+  - 进程有专用的内存区域 线程共享内存单元 
+
+  
+
+  
+
+### 01 激活多线程:
+
+------
+
+
+
+- 线程需要扩展自`Thread`类 成为其子类
+- 线程处理需要被编写在`run()`方法内部 是定义在Thread类内的方法 新代码编写在run()内就是覆盖的操作
+- ![2tor1J](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/2tor1J.png)
+- 当子类已经有其他父类时 无法再`extends Thread` 使用 `Runnable接口`
+
+![0gB4J5](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/0gB4J5.png)
+
+- 实现了Runable接口还需要调用Tread()中的start()方法才可以 
+
+- **Thread类和Runable接口关系:**
+  - Thread类实现Ruanble接口——>是Runable接口的子类
+  - Runable接口声明了抽象的run()方法——>必须在实现Runable接口的类内定义run() 方法
+  - ![JbYt7E](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/JbYt7E.png)
+
+
+
+
+
+### 02 线程操作方法
+
+------
+
+**状态**
+
+- 新建  `Thread thread = new Thread()` 具有相应的内存空间但不可运行
+- 就绪 调用`start()`方法启动线程 队列排队
+- 运行 就绪状态被调用获得cpu资源 自动调用`run()`方法 
+- 堵塞 `sleep() suspend() wait()` 线程之间的`join()`
+- 死亡 `stop()` 或者`run()`执行完
+
+**操作:**
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/C3Zgl4.png" alt="C3Zgl4" style="zoom:50%;" />
+
+
+
+### 03 线程安全/同步
+
+------
+
+保证当前运行代码的**原子性**:
+
+ 即cpu不去执行其他线程中、可能影响当前线程中的下一句代码的执行结果的代码块
+
+等下一句执行完成后再去执行其他线程中的有关代码块
+
+```java
+//对代码块进行同步
+synchronized(对象){
+    '''
+}
+
+//对函数同步
+访问控制符 synchronized 返回值类型 方法名称 (参数) {
+    '''
+}
+```
+
+
+
+**死锁:**
+
+一组线程或者进程 其中每个都在等待一个只有其他线程/进程才可以执行的操作
 
 
 
@@ -1202,6 +1391,7 @@ final的
 
 
 
+## 11 IO操作
 
 
 
@@ -1209,43 +1399,99 @@ final的
 
 
 
+## 12 Java常用类库/集合
+
+### 12.01 String/StringBuilder/StringBuffer
+
+------
+
+位于`java.lang`包内 无需导入import即可使用
+
+- String类的对象内容一旦被初始化即不可被改变
+- 
+
+使用`dash`查看常用的方法
+
+**String、StringBuffer、StringBuilder 有什么区别？**
+
+​	1、String 一旦创建不可变，如果修改即创建新的对象，StringBuffer 和 StringBuilder 可变，修改之后引用不变。
+
+​	2、String 对象直接拼接效率高，但是如果执行的是间接拼接，效率很低，而 StringBuffer 和 StringBuilder 的效率更高，同时 StringBuilder 的效率高于 StringBuffer。
+
+​	3、StringBuffer 的方法是线程安全的，StringBuilder 是线程不安全的，在考虑线程安全的情况下，应该使用 StringBuffer。
+
+`StringBuffer`和`StringBuilder`有相同的父类`AbstractStringBuilder`
+
+```java
+StringBuffer stringBuffer = new StringBuffer();
+System.out.println("StringBuffer:"+stringBuffer);
+System.out.println("StringBuffer的长度:"+stringBuffer.length());
+
+stringBuffer = new StringBuffer("Hello World");
+System.out.println("StringBuffer:"+stringBuffer);
+System.out.println("下标为2的字符是："+stringBuffer.charAt(2));
+
+stringBuffer = stringBuffer.append("Java");
+System.out.println("append之后的StringBuffer："+stringBuffer);
+
+stringBuffer = stringBuffer.delete(3, 6);
+System.out.println("delete之后的StringBuffer："+stringBuffer);
+
+stringBuffer = stringBuffer.deleteCharAt(3);
+System.out.println("deleteCharAt之后的StringBuffer："+stringBuffer);
+
+stringBuffer = stringBuffer.replace(2,3,"StringBuffer");
+System.out.println("replace之后的StringBuffer："+stringBuffer);
+
+String str = stringBuffer.substring(2);
+System.out.println("substring之后的String："+str);
+
+str = stringBuffer.substring(2,8);
+System.out.println("substring之后的String："+str);
+
+stringBuffer = stringBuffer.insert(6,"six");
+System.out.println("insert之后的StringBuffer："+stringBuffer);
+System.out.println("e的下标是："+stringBuffer.indexOf("e"));
+System.out.println("下标6之后的e的下标是："+stringBuffer.indexOf("e",6));
+
+stringBuffer = stringBuffer.reverse();
+System.out.println("reverse之后的StringBuffer："+stringBuffer);
+
+str = stringBuffer.toString();
+System.out.println("StringBuffer对应的String："+str);
+```
 
 
 
+### 12.02 基本数据类型的包装类 拆装箱
+
+------
+
+![GCmxNT](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/GCmxNT.png)
+
+包装类与基本数据类型之间的转换:
+
+```java
+String a="123";
+int i = Integer.parseInt(a);
+System.out.println(i);
+
+
+```
 
 
 
+### 12.03 类集合框架
+
+------
+
+Collection定义的方法:
+
+![NpsW79](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/NpsW79.png)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#### 12.03.01 List接口
 
 
 
