@@ -1319,6 +1319,10 @@ import导入不在同一包内其他类
 
 - 线程需要扩展自`Thread`类 成为其子类
 - 线程处理需要被编写在`run()`方法内部 是定义在Thread类内的方法 新代码编写在run()内就是覆盖的操作
+  - 创建子类继承于Thread()类
+  - override父类Thread()的 run()方法——>将此线程执行的操作声明在run内
+  - 创建该子类的对象
+  - 通过对象调用start()fangfa
 - ![2tor1J](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/2tor1J.png)
 - 当子类已经有其他父类时 无法再`extends Thread` 使用 `Runnable接口`
 
