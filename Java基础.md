@@ -1,4 +1,4 @@
-**CS61B**
+****CS61B****
 
 # Java基础
 
@@ -1318,12 +1318,42 @@ import导入不在同一包内其他类
 
 
 - 线程需要扩展自`Thread`类 成为其子类
+
 - 线程处理需要被编写在`run()`方法内部 是定义在Thread类内的方法 新代码编写在run()内就是覆盖的操作
   - 创建子类继承于Thread()类
   - override父类Thread()的 run()方法——>将此线程执行的操作声明在run内
   - 创建该子类的对象
-  - 通过对象调用start()fangfa
+  - 通过对象调用start()方法: 
+    - 启动当前线程
+    - 调用当前线程的run()
+    - 只能使用start()调用线程一次 不可重复start() 爆出IlleaglThread——>需要重新创建线程对象来调用strat()
+
 - ![2tor1J](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/2tor1J.png)
+
+- ```java
+  // 使用Thread类的匿名子类方式
+  new Thread(){
+      public void run(){
+          //...
+      }
+  }.satrt();
+  
+  // 给主线程命名
+  Thread.currentThread().setName("主线程的新名字");
+  // 用构造器给线程命名:
+  class Treadtest extends Thread{
+      //...
+      public Threadtest(String name) {
+          super(name);
+      }
+  }
+  psvm{
+      Threadtest t1 = new Threadtest("构造器给线程命名");
+  }
+  ```
+
+  ![SDWzRA](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/SDWzRA.png)
+
 - 当子类已经有其他父类时 无法再`extends Thread` 使用 `Runnable接口`
 
 ![0gB4J5](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/0gB4J5.png)
