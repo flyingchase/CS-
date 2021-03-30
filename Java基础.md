@@ -26,6 +26,10 @@ JRE= JVM +Java核心类库
 
 
 
+父类没有抛出异常 所继承的子类也不可以抛出异常
+
+
+
 
 
 
@@ -1354,6 +1358,11 @@ import导入不在同一包内其他类
 
   ![SDWzRA](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/SDWzRA.png)
 
+  ![On24Yo](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/On24Yo.png)
+  
+  - `Join()` 在线程中切换为其他线程的执行, 原线程进入**阻塞**状态——>直到新的线程执行完再执行原线程. 
+  - `sleep(long milltime)`  是一个静态方法 使用extends Thread 的子类不可以抛出异常 因为父类的run()方法没有异常  
+  
 - 当子类已经有其他父类时 无法再`extends Thread` 使用 `Runnable接口`
 
 ![0gB4J5](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/0gB4J5.png)
@@ -1381,9 +1390,20 @@ import导入不在同一包内其他类
 - 堵塞 `sleep() suspend() wait()` 线程之间的`join()`
 - 死亡 `stop()` 或者`run()`执行完
 
+
+
 **操作:**
 
 <img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/C3Zgl4.png" alt="C3Zgl4" style="zoom:50%;" />
+
+线程的优先级:
+
+1-10 5(默认)  高优先级的线程可以抢占低优先级线程的cpu执行权  但是并不意味着只有高priority执行完再执行低的 概率而言
+
+```java
+getPriority()
+setPriority()
+```
 
 
 
