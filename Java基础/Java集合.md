@@ -954,7 +954,7 @@ Comparator<Developer> byName = new Comparator<Developer>() {
 对应的 `Lambda` 表达式示例：
 ```java
  Comparator<Developer> byNameLambda =(Developer developer, Developer compareDeveloper)->developer.getName().compareTo(compareDeveloper.getName());
- ```
+```
 
  比较 `Developer`的对象的 `age` 的示例。通常使用 `Collections.sort` 并传递一个这样的匿名`Comparator`类：
 ```java

@@ -1,3 +1,5 @@
+
+
 ****CS61B****
 
 # Java基础
@@ -521,7 +523,6 @@ String类没有提供直接修改字符串的方法 String对象又称为*不可
           out1.println(name);
           out1.print(name); 
     ```
-    
 
 
 
@@ -633,11 +634,11 @@ int[] a={1,2,3,4,5};
   在该文件中需使用 Add 为类名方可编译通过。
 
   ```java
-
+  
   输入与输出
-import java.util.Scanner;
+  import java.util.Scanner;
   public class PrintHello {
-
+  
   	public static void main(String[] args) {
 		// TODO Auto-generated method stub
   		System.out.println("hello world,");
@@ -645,9 +646,9 @@ import java.util.Scanner;
   		System.out.println("echo: "+in.next());
 		
   	}
-
+  
   }
-//注意在读入用户的输入的时候，并不是在Scanner in = new Scanner(System.in);这句话进行读入的，这里只是定义了一个对象
+  //注意在读入用户的输入的时候，并不是在Scanner in = new Scanner(System.in);这句话进行读入的，这里只是定义了一个对象
   //真正读入变量的是in.next()，用户的输入是在这句话执行的
   
   //in.next()表示读入一个字符串，如果是in.nextInt()就表示读入一个数字
@@ -661,14 +662,14 @@ import java.util.Scanner;
   		// TODO Auto-generated method stub
 		System.out.println("2+3="+(2+3));
   	}
-
+  
   }
   //当字符串与数字相加的时候，数字会自动转换成字符串
   
   定义变量
-import java.util.Scanner;
+  import java.util.Scanner;
   public class PrintHello {
-
+  
   	public static void main(String[] args) {
 		// TODO Auto-generated method stub
   		System.out.println("please input two integers:");
@@ -680,11 +681,11 @@ import java.util.Scanner;
   	}
   }
   
-
+  
   一行定义多个变量
-int a = 1,b = 2;
+  int a = 1,b = 2;
   常量的定义
-final int money = 100; //定义之后money就一直是100，不能被修改
+  final int money = 100; //定义之后money就一直是100，不能被修改
   
   运算符优先级
   
@@ -1580,12 +1581,299 @@ Collection接口有两个子接口 list Set实现的子类均为单列集合 Map
 
 - 遍历:
   - 迭代器——>Iterator对象; 所有实现Collection接口均实现
+  
+    <img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/2021-05-13 15.42.43.gif" alt="2021-05-1315.42.43" style="zoom:150%;" />
+
+#### 12.03.02 List接口
+
+`List特点:`
+
+- 元素有序(添加和取出顺序 ) 可重复
+- 支持索引 从0开始
+
+实现List接口有: `ArrayList LinkedList  Vector Stack etc. `
+
+`List接口常用方法:` 常见8种
+
+```java
+// index位置插ele List长度自动+1
+void add(int index, Object ele);
+//index位置开始将eles中所有元素加入
+boolean addAll(int index, Collection eles);
+// 获取index位置元素
+Object get(int index);
+// 返回object在集合中首次出现位置
+int indexOf(Object obj);
+// 返回obj在集合中末次出现位置
+int lastIndexOf(Object obj);
+// 移除index位置元素并返回该元素
+Object remove(int index);
+// 替换index位置元素为ele——>也可用于交换
+
+Object set(int index, Object ele);
+// 返回从fromIndex到toIndex位置的子集合 前闭后开[forIndex,toIndex)
+List subList(int formIndex, int toIndex);
+
+```
+
+`set`可用于交换 注意先后访问的顺序
+
+![KGeM3K](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/KGeM3K.png)
+
+`List常见遍历方式:`
+
+```java
+// 迭代器遍历
+Iterator ite = collection.iterator();
+while(ite.hasNext()) {
+    Object next - ite.next();
+}
+
+// foreach遍历
+for(Object o : Collection) {
+    
+}
+
+// 普通fori
+        for (int i = 0; i < Collection.size(); i++) {
+            Object o = Collection.get(i);
+        }
+```
+
+
+
+##### ArrayList注意事项⚠️
+
+- 可以加入多个null
+
+- 是由数组底层实现
+
+- 线程不安全——>没有`synchronized` 可以等同于Vector (线程安全)
+
+
+
+*底层源码阅读*  注意IDEA默认debug不显示null的扩容内容
+
+- 维护`Object`类型数组 `elecmentData`
+
+  - `transient object[] elementData` 表示为瞬时 该属性不会被序列化
+
+- 创建`ArrayList`对象时:
+
+  - 无参构造器——>初始化的elementData容量为0, 第一次添加扩容elementData为10, 再次扩容则为1.5倍(0_10_15_22)
+  - ArrayList(int) 指定大小的构造器——>elementData容量为制定大小,扩容则直接扩为1.5倍
+
+  **扩容:**
+
+  ```java
+  // 右移一位 ——> /2
+  int newCapacity = oldCapacity + (oldCapacity >> 1);
+  // 使用Arrays.copyOf(nums,length)来对底层数组elementData扩容
+  return elementData = Arrays.copyOf(elementData, newCapacity);
+  // Arrays.copyOf()超出nums的len范围用null来填充
+  ```
+
+  `无参构造器:`![HXRDVH](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/HXRDVH.png)
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/tIEh4x.png" alt="tIEh4x" style="zoom: 50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/kBrKAj.png" alt="kBrKAj" style="zoom:150%;" />
+
+`ArraysSupport.newLength`方法用于获取newCapacity
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/Mh3IOH.png" alt="Mh3IOH" style="zoom:50%;" />
+
+
+
+##### `Vector`底层结构&源码剖析
+
+- 底层同样是对象数组 `protected Object[] elementData`
+
+- 线程同步安全 操作方法带有`synchronized`
+
+  **无参构造:** 默认10initalCapacity 再按照2倍扩容
+
+  **指定大小:** 每次2倍扩容
+
+##### `LinkedList`源码和结构
+
+<img src="/Users/qlzhou/Library/Application Support/typora-user-images/image-20210514171051143.png" alt="image-20210514171051143" style="zoom:50%;" />
+
+- 底层双向链表、队列——>插入、删除效率高
+  - 维护两个属性first last 分别指向首尾结点
+  - 每个节点Node维护prev next item三个属性
+  - 双向链表的插入——> waitInsert.next=prevNode; waitInsert.pre=nextNode; prevNode.next=waitInsert; nextNode.pre=waitInsert;
+- 元素任意(可以重复)  包括null
+- 线程不安全 没有实现同步
+
+**`LinkedListCRUD`**
+
+​	linkedList.add(item)——>使用linkLast(e)函数(将添加的节点挂入原链表的最后) 
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/NJEbDZ.png" alt="NJEbDZ" style="zoom:50%;" />
+
+*`Explain To linkLast(E e)`*
+
+初始last=null——>第一个节点时 first last newNode均指向节点newNode——>再插入则 l=last last=newNode 将newNode的prev指向l 即原先的last(上一个节点位置) 同时将last指向newNode 设为双向链表的尾指针——>l!=null 再将上一个节点的next指针指向newNode 同时更新size/modCount 完成两个节点之间的链接
+
+
+
+linkedList.remove(int index)——>首先使用node(index)函数找到index下标的结点并返回该节点——>调用unlink(Node<E> x) 函数删除该节点并返回item值
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/C2JGW8.png" alt="C2JGW8" style="zoom:50%;" />
+
+*`Explain To node(index)`*
+
+判断下标index在整个链表的前部还是后部——>⚠️后部`i=size-1;i>index;i--` 判断
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/DdBI3S.png" alt="DdBI3S" style="zoom:50%;" />
+
+​	*`Explain To unlink(Node<E> x)`*
+
+暂存待删结点x的前后结点
+
+
+
+prev next——>移动x的前一结点的next指向x的下一结点`prev.next=next`   移动x的下一结点的prev指向x的上一结点`next.prev=prev` ——>同时将x的prev和next均置空(help GC) ——>最后item置空并链表size-1
+
+
+
+##### ArrayList && LinkedList Compare
+
+
+
+ArrayList——>增查
+
+LinkedList——删改
+
+均为线程不安全
 
 
 
 
 
-Throws && throw :
+### `Set`
+
+`Feature:`
+
+- 无序（添加与取出的顺序不一致） 没有 index 索引
+  - 取出的顺序一次设定即被固定
+- 无重复元素——>最多包含一个 null 多个重复数字后者不会被添加
+- `set`接口实现的类：`HashSet、TreeSet、LinkedHashSet、etc.`
+
+
+
+`Mathods:`
+
+- 是 Collection 的子接口——>常用方法一致
+- 遍历：迭代器 foeeach 不可 index 索引
+
+
+
+
+
+##### `HashSet`
+
+`instructions:`
+
+- 实现 Set 接口
+- 本质上是`HashMap` <img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/DBF5F0.png" alt="DBF5F0" style="zoom:50%;" />——`HashMap`底层是数组+链表+红黑树
+  - 在数组的某个index 位置存储链表（数据存储的高效）
+  - index 上存储的链表长度>8（TreeIfy_Threshold）/数组长度>64(Min_TreeIfy_Capacity) ————>转化为树
+
+- 可存放 null 但仅可有一个 元素不可重复 
+
+  - 注意元素重复与否与 JVM 内存相关——>常量池、栈内存
+  - toString 没有重写则输出为引用的地址 重写则为内容
+  - new String(“**”)——>先在常量池中查找有没有已经存在的 str
+
+- 不保证元素有序，取决于 Hash 后在确定索引
+
+  
+
+`add `
+
+- 添加元素时——>得到元素的 hash 值再转化——>索引值(存储位置)
+- 存储数据表 tables——>是否已经存放（没有直接加入、有则下步比较 ）
+- 有调用 equal 比较——>不相同再加入
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Throws && throw :cccc
 
 ​	throw: 生成一个异常对象并手动抛出 在方法内部
 
@@ -1756,4 +2044,6 @@ Throws && throw :
 d
 
 
+
+
 
