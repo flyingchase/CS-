@@ -4,8 +4,6 @@
 
 # Java基础
 
-------
-
 ## 00 前言
 
 
@@ -1779,7 +1777,7 @@ LinkedList——删改
 - 实现 Set 接口
 - 本质上是`HashMap` <img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/DBF5F0.png" alt="DBF5F0" style="zoom:50%;" />——`HashMap`底层是数组+链表+红黑树
   - 在数组的某个index 位置存储链表（数据存储的高效）
-  - index 上存储的链表长度>8（TreeIfy_Threshold）/数组长度>64(Min_TreeIfy_Capacity) ————>转化为树
+  - index 上存储的链表长度>8（TreeIfy_Threshold）并且数组长度>64(Min_TreeIfy_Capacity) ————>转化为树
 
 - 可存放 null 但仅可有一个 元素不可重复 
 
@@ -1791,11 +1789,17 @@ LinkedList——删改
 
   
 
-`add `
+###### `HashSet add Method `
 
 - 添加元素时——>得到元素的 hash 值再转化——>索引值(存储位置)
 - 存储数据表 tables——>是否已经存放（没有直接加入、有则下步比较 ）
-- 有调用 equal 比较——>不相同再加入
+- 有调用 equal 比较——>不相同再加入到最后
+
+
+
+
+
+hash 值计算<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/2b37hf.png" alt="2b37hf" style="zoom:50%;" />
 
 
 
@@ -1805,47 +1809,79 @@ LinkedList——删改
 
 
 
+第一次 add
+
+依据 hash 计算出的 key 应该存档于 table 的位置，并赋值给辅助变量 p(p 指向索引的结点)
+
+再判断 p 是否为空——>空（对应的插入位置无元素）则将 key新建 Node 并存入 tab[i] （hash key value=present next）——>判断 size 与 threshold(0.75*16)  扩容与否  再返回 null 则表示插入成功
+
+add 所插入的位置非空——>
+
+`p.hash==hash && ((k=p.key)==key)||(key!=null&&key.equals(k)) ` hash value equals 三重比较确保两者不相同
+
+
+
+返回 oldValue 非空则插入式失败
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/Jzejjh.png" alt="Jzejjh" style="zoom:150%;" />
+
+
+
+###### `HashSet 扩容机制`
+
+1. 底层`HashMap` 第一次添加时 `table 数组`扩容到 16，阈值`threshold`为 16*0.75加载因子（`loadFactor`）=12
+
+2. `table 数组`扩容为* 2=32 新的临界值(`threshold`)为 0.75*32=24
+
+   扩容是使用左移<<1实现 * 2 
+
+3. 链表元素个数达到`TreeIfy_Threshold(8)`且 table 数组大小>=`Min_Treeify_Capacity` 则转化为红黑树，否则仍然是扩容数组
 
 
 
 
 
+​	使用重写 class 的 hashcode 方法 返回同一个 hashcode 使得插入在 map 的同一个数组 index 上的链表内 链表长度超过 8 后会使  table 扩容 <<1 表长+1  扩容为 32表长再+1 到 10  再扩容 64  若在添加元素则树化  treeifyBin 方法  
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/29NvGo.png" alt="29NvGo" style="zoom:50%;" />
+
+​	直到走到链表末尾进行且 binCount>=8-1=7(从 0 开始)则调用`treeifyBin`方法树化 传入 table 和 hash 参数
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/B2ojcy.png" alt="B2ojcy" style="zoom:50%;" />
+
+`Min_TreeIfy_Capacity=64`
+
+`tab[index=(n-1)&hash]` 找到数组储存数据的位置并将e 指向这个引用
 
 
 
 
 
+##### `LinkedHashSet`
+
+>`Features:`
+>
+>1. 属于 HashSet 的子类；
+>2. 底层是`LinkedHashMap`，维护了数组+双向链表；
+>3. 依据元素的`hashcode`决定元素的存储位置，同时用链表维护元素的次序（图），使得元素看起来插入顺序保存；
+>4. 不允许重复元素；
 
 
 
+`Explain`
+
+>1. 维护 hash 表和双向链表（属性有 head 和 tail） 使得每次后续插入的元素连接在最后 有序
+>2. 每个节点有 prev 和 next 属性 before after
+>3. 添加元素时，先求 hash值再求索引，从而确定元素在 hashtable 的位置——>再添加进入双向链表
+>4. 遍历顺序保证与插入顺序一致
 
 
 
+- 底层维护`LinkedeHashMap`结构 ——>是 `HashMap` 的子类 
 
+- 首次初始化为 16（size）结点类型为`LinkedHashMao$Entry`——>数组是`HashMap$Node[]` 存放的元素是`LinkedHashMap$Entry`  即为多态 继承父类的属性
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  ![W58GVZ](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/W58GVZ.png)
 
 
 
