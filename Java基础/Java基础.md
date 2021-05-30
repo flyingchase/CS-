@@ -1546,7 +1546,7 @@ System.out.println(i);
 
 
 
-### 12.03 类集合框架
+## 13 类集合框架
 
 ------
 
@@ -1568,7 +1568,7 @@ Collection接口有两个子接口 list Set实现的子类均为单列集合 Map
 
 ![vkXtxV](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/vkXtxV.png)
 
-#### 12.03.01 Collection接口
+### 13.01 Collection接口
 
 - 常用方法 
   - add/addAll
@@ -1582,7 +1582,7 @@ Collection接口有两个子接口 list Set实现的子类均为单列集合 Map
   
     <img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/2021-05-13 15.42.43.gif" alt="2021-05-1315.42.43" style="zoom:150%;" />
 
-#### 12.03.02 List接口
+### 13.02 List接口
 
 `List特点:`
 
@@ -1640,7 +1640,7 @@ for(Object o : Collection) {
 
 
 
-##### ArrayList注意事项⚠️
+#### ArrayList注意事项⚠️
 
 - 可以加入多个null
 
@@ -1683,7 +1683,7 @@ for(Object o : Collection) {
 
 
 
-##### `Vector`底层结构&源码剖析
+#### `Vector`底层结构&源码剖析
 
 - 底层同样是对象数组 `protected Object[] elementData`
 
@@ -1693,7 +1693,7 @@ for(Object o : Collection) {
 
   **指定大小:** 每次2倍扩容
 
-##### `LinkedList`源码和结构
+#### `LinkedList`源码和结构
 
 <img src="/Users/qlzhou/Library/Application Support/typora-user-images/image-20210514171051143.png" alt="image-20210514171051143" style="zoom:50%;" />
 
@@ -1750,7 +1750,7 @@ LinkedList——删改
 
 
 
-### `Set`
+### 13.03 `Set`
 
 `Feature:`
 
@@ -1770,7 +1770,7 @@ LinkedList——删改
 
 
 
-##### `HashSet`
+#### `HashSet`
 
 `instructions:`
 
@@ -1789,7 +1789,7 @@ LinkedList——删改
 
   
 
-###### `HashSet add Method `
+##### `HashSet add Method `
 
 - 添加元素时——>得到元素的 hash 值再转化——>索引值(存储位置)
 - 存储数据表 tables——>是否已经存放（没有直接加入、有则下步比较 ）
@@ -1801,14 +1801,6 @@ LinkedList——删改
 
 hash 值计算<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/2b37hf.png" alt="2b37hf" style="zoom:50%;" />
 
-
-
-
-
-
-
-
-
 第一次 add
 
 依据 hash 计算出的 key 应该存档于 table 的位置，并赋值给辅助变量 p(p 指向索引的结点)
@@ -1819,15 +1811,13 @@ add 所插入的位置非空——>
 
 `p.hash==hash && ((k=p.key)==key)||(key!=null&&key.equals(k)) ` hash value equals 三重比较确保两者不相同
 
-
-
 返回 oldValue 非空则插入式失败
 
 <img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/Jzejjh.png" alt="Jzejjh" style="zoom:150%;" />
 
 
 
-###### `HashSet 扩容机制`
+##### `HashSet 扩容机制`
 
 1. 底层`HashMap` 第一次添加时 `table 数组`扩容到 16，阈值`threshold`为 16*0.75加载因子（`loadFactor`）=12
 
@@ -1857,7 +1847,7 @@ add 所插入的位置非空——>
 
 
 
-##### `LinkedHashSet`
+#### `LinkedHashSet`
 
 >`Features:`
 >
@@ -1883,6 +1873,7 @@ add 所插入的位置非空——>
 
   ![W58GVZ](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/W58GVZ.png)
 
+ 要求 hashcode 和 equal 均相同才无法加入，对于非基本数据类型需要重写两个方法 equal 和 hashcode
 
 
 
@@ -1890,12 +1881,16 @@ add 所插入的位置非空——>
 
 
 
+### 13.04 Map
 
+该接口子类具有的特点：
 
-
-
-
-
+>Features:
+>
+>1. Map 和 collection 并列，用于保存具有映射关系的 Key-value 之间为单项一对一的关系
+>2. Key Value 可以是任何引用类型的数据 object，会被封装到 HashMap$Node 内部类，Node 实现Entry 接口，即一对 K-V 就是一个 Entry
+>      1. 使用 EntrySet 
+>3. Key 可为 null 仅一个但不可重复（），value 可以重复并可为 null
 
 
 
