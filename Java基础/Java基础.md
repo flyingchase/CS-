@@ -1879,6 +1879,88 @@ add 所插入的位置非空——>
 
 
 
+#### TreeSet
+
+可以排序
+
+使用无参构造器创建`TreeSet`  无序
+
+有参可以使用`Comparator` 接口——>传入比较器 匿名内部类
+
+构造器将传入的比较器对象comparator赋给 TreeSet 底层的 TreeMap 的属性 comparator
+
+``` java
+public TreeMap(Comparator<? super K> comparator) {
+    this.comparator = comparator;
+}
+
+
+final int compare(Object k1, Object k2) {
+    return comparator==null ? ((Comparable<? super K>)k1).compareTo((K)k2)
+        : comparator.compare((K)k1, (K)k2);
+}
+```
+
+在 TreeSet 的 add 方法会调用
+
+``` java
+private V put(K key, V value, boolean replaceOld) {
+    Entry<K,V> t = root;
+    if (t == null) {
+        addEntryToEmptyMap(key, value);
+        return null;
+    }
+    int cmp;
+    Entry<K,V> parent;
+    // split comparator and comparable paths
+    Comparator<? super K> cpr = comparator;
+    if (cpr != null) {
+        do {
+            parent = t;
+           	// 调用自定的 compare
+            cmp = cpr.compare(key, t.key);
+            if (cmp < 0)
+                t = t.left;
+            else if (cmp > 0)
+                t = t.right;
+            else {
+                // 两个值相等时候即返回 oldVaule 无法添加
+                V oldValue = t.value;
+                if (replaceOld || oldValue == null) {
+                    t.value = value;
+                }
+                return oldValue;
+            }
+        } while (t != null);
+    } else {
+        Objects.requireNonNull(key);
+        @SuppressWarnings("unchecked")
+        Comparable<? super K> k = (Comparable<? super K>) key;
+        do {
+            // 这里的循环逐个比较则一旦出现相应的就 return了 
+            // 即==时候无法被加入（==为自定的规则）
+            parent = t;
+            cmp = k.compareTo(t.key);
+            if (cmp < 0)
+                t = t.left;
+            else if (cmp > 0)
+                t = t.right;
+            else {
+                V oldValue = t.value;
+                if (replaceOld || oldValue == null) {
+                    t.value = value;
+                }
+                return oldValue;
+            }
+        } while (t != null);
+    }
+    addEntry(key, value, parent, cmp < 0);
+    return null;
+}
+```
+
+
+
 
 
 ### 13.04 Map
@@ -1889,11 +1971,25 @@ add 所插入的位置非空——>
 >
 >1. Map 和 collection 并列，用于保存具有映射关系的 Key-value 之间为单项一对一的关系
 >2. Key Value 可以是任何引用类型的数据 object，会被封装到 HashMap$Node 内部类，Node 实现Entry 接口，即一对 K-V 就是一个 Entry
->      1. 使用 EntrySet 
+>     1. 使用 EntrySet 内部类，定义的类型是 Entry 实际上存放是 HashMap$Node 因为 Node implement Map.Entry 接口——>接口的多态
+>     2. EntrySet 方便遍历——>提供了 getKey getValue 方法
 >3. Key 可为 null 仅一个但不可重复（），value 可以重复并可为 null
 
 
 
+Node——>Entry——>EntrySet
+
+
+
+
+
+
+
+Properties：
+
+​	继承自HashTable 并且适用于 Properties文件类型导入加载数据到 Properities 类对象读取和修改
+
+​	读取配置文件时候常用
 
 
 
@@ -1903,30 +1999,22 @@ add 所插入的位置非空——>
 
 
 
+#### 集合选择
 
-Throws && throw :cccc
-
-​	throw: 生成一个异常对象并手动抛出 在方法内部
-
-​	throws: 处理异常的方法  在方法声明的末尾 对应的右try-catch-fianlly
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- 存储类型
+- 单列对象：`Collection` 接口
+  - 允许重复：List
+    - 增删：LinkedList——>底层双向链表
+    - 改查：ArrayList——>底层维护 Object 可变数组
+  - 不允许重复：Set
+    - 无序：HashSet——>底层 HashMap 维护哈希表（数组+链表+红黑树）
+    - 排序：TreeSet
+    - 插入和取出循序一致：LinkedHashSet——>数组+双向链表
+- 双列键值对：Map
+  - 键无序：HashMap——>哈希表
+  - 键排序：TreeMap
+  - 键插入和取出顺序一致：LinkedHashMap
+  - 读取配置文件：Properties
 
 
 
