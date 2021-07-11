@@ -62,7 +62,7 @@ commit_id 是要还原的合并提交 id。
 
 
 ```bash
-# 删除 untracked files
+# 删除 untracked files 
 git clean -f
  
 # 连 untracked 的目录也一起删掉
@@ -75,5 +75,27 @@ git clean -xfd
 git clean -nxfd
 git clean -nf
 git clean -nfd
+```
+
+### 4. Git命令显示中文路径
+
+``` shell
+git config --global core.quotePath false
+```
+
+### 5. 指定文件的历史修改记录
+
+ ``` shell
+ git log --follow -p 文件名
+ ```
+
+### 6. 指定提交的修改记录
+
+``` shell
+# 查看commit提交修改的文件
+git show --stat <commit的代号>
+
+#查看commit提交修改的文件及内容
+git show <commit的代号>
 ```
 
