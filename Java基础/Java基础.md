@@ -1,4 +1,4 @@
-
+
 
 ****CS61B****
 
@@ -1975,13 +1975,20 @@ private V put(K key, V value, boolean replaceOld) {
 >     2. EntrySet 方便遍历——>提供了 getKey getValue 方法
 >3. Key 可为 null 仅一个但不可重复（），value 可以重复并可为 null
 
-
-
 Node——>Entry——>EntrySet
 
 
 
+### TreeMap
 
+构造方法：
+
+``` java
+// 默认构造器——>无序
+TreeMap treeMap = new TreeMap();
+
+//
+```
 
 
 
@@ -1990,12 +1997,6 @@ Properties：
 ​	继承自HashTable 并且适用于 Properties文件类型导入加载数据到 Properities 类对象读取和修改
 
 ​	读取配置文件时候常用
-
-
-
-
-
-
 
 
 
@@ -2022,147 +2023,6 @@ Properties：
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-d
-
-
 
 
 

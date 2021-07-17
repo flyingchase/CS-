@@ -99,3 +99,15 @@ git show --stat <commit的代号>
 git show <commit的代号>
 ```
 
+
+
+### 7. 删除文件/重命名文件
+
+``` shell
+git mv oldName newName
+git commit -m "rename"
+
+git rm -rf waitingFile
+git commit -m "deleteFiles"
+```
+
