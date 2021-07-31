@@ -75,7 +75,30 @@ lambda 表达式是一个代码块 必须传入相应的变量规范
 
   - Predicate \<T>
 
+*函数式接口使用：*``@FunctionalInterface``对是否是函数式接口进行检查
 
+定义函数式接口——>定义方法 方法参数为函数式接口——>使用 lambda 表达式为方法的参数
+
+``` java
+public class lambdaDemo {
+    public static void main(String[] args) {
+        // 使用 lambda表达式作为方法的参数
+        Integer res = new lambdaDemo().operation(100, (x) -> x * x);
+        System.out.println(res);
+    }
+    
+    // 定义方法 参数为函数式接口
+    public Integer operation(Integer num, FunctionalInterfaceDemo funcInterface) {
+        return funcInterface.getValue(num);
+    }
+
+    // 定义函数式接口 只有一个抽象方法的接口
+    /*接口没有() 无返回参数声明 */
+    public interface FunctionalInterfaceDemo {
+        public Integer getValue(Integer num);
+    }
+}
+```
 
 
 
