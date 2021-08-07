@@ -1979,9 +1979,15 @@ Node——>Entry——>EntrySet
 
 
 
+X->f(X)—>Y->%table.length——>Array postion of X
+
+
+
+
+
 ### TreeMap
 
-构造方法：
+ 按照 key 从小到大遍历的顺序  增删查 O(logN)
 
 ``` java
 // 默认构造器——>无序
@@ -2016,7 +2022,6 @@ Properties：
   - 键排序：TreeMap
   - 键插入和取出顺序一致：LinkedHashMap
   - 读取配置文件：Properties
-
 
 
 
