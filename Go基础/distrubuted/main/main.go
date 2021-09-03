@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"runtime"
+	"sync"
+	"time"
 )
 
 type Human struct {
@@ -68,26 +70,51 @@ func fibonacc(c, quit chan int) {
 	}
 
 }
-func fact (n int) int{
-	if n==0 {
-		return 1
+func intSeq() func() int{
+	i:=0
+	return func() int {
+	    i++
+	    return i
 	}
-	return n* fact(n-1)
+}
+func worker(id int, wg *sync.WaitGroup) {
+	defer wg.Done()
+	fmt.Println("start: ",id)
+	time.Sleep(time.Second)
+	fmt.Println("done: ",id)
+
 }
 
-func main(){
-	fmt.Println(fact(7))
+func main() {
 
-	var fib func(n int) int
+	var wg sync.WaitGroup
+	for i:=1;i<=5;i++{
+		wg.Add(1)
+		go worker(i,&wg)
 
-	fib=func (n int) int {
-		if n<2 {
-			return n
-		}
-		return fib(n-1)+fib(n-2)
 	}
-	fmt.Println(fib(7))
-
+	wg.Wait()
+	//nextIntL:=intSeq()
+	//fmt.Println(nextIntL())
+	//fmt.Println(nextIntL())
+	//fmt.Println(nextIntL())
+	//newIntL:=intSeq()
+	//fmt.Println(newIntL())
+//timer1:=time.NewTicker(2*time.Second)
+//<-timer1.C
+//fmt.Println("time 1 fired")
+//
+//timer2:=time.NewTicker(time.Second)
+//go func() {
+//
+//	<-timer2.C
+//	fmt.Println("tim 2 fired")
+//}()
+//Stop2:=timer2.Stop()
+//	if Stop2{
+//		fmt.Println("timer 2 stopped")
+//	}
+//	time.Sleep(2*time.Second)
 
 	//s:=make([]string,3)
 	//fmt.Println("emp: ",s)
