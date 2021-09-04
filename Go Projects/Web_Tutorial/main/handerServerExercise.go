@@ -1,19 +1,19 @@
 package main
 
 import "net/http"
-
-func main() {
-
-	mh := myHandler{}
-
-	server := http.Server{
-		Addr: "localhost:1090",
-		Handler: nil,	// use DefaultServeMux
-	}
-	http.Handle("/wo",&mh)
-	http.Handle("/home",http.HandlerFunc(welcome))
-	server.ListenAndServe()
-}
+//
+//func main() {
+//
+//	mh := myHandler{}
+//
+//	server := http.Server{
+//		Addr: "localhost:1090",
+//		Handler: nil,	// use DefaultServeMux
+//	}
+//	http.Handle("/wo",&mh)
+//	http.Handle("/home",http.HandlerFunc(welcome))
+//	server.ListenAndServe()
+//}
 
 type myHandler struct {
 }

@@ -1,4 +1,4 @@
-# Go Web
+# Go Web基础
 
 
 
@@ -467,13 +467,27 @@ http.ListenAndServe("8080",http.FileServer(http.Dir("wwwwroot")))
 
 ### URL
 
+请求信息的第一行里面的信息
 
+指向 url>URL类型的指针 url>URL 是一个 struct
+
+scheme://[userinfo@]host/path[?query]\[#fragment]通用格式 
+
+
+
+*Query*
+
+- 查询字符串
 
 
 
 ### Header
 
+`map[string]/[]string`类型
 
+设置 key 时候创建空的[]string 作为 value 第一个元素就是新的 header 值
+
+key 添加元素执行 append 操作
 
 
 
@@ -483,6 +497,23 @@ http.ListenAndServe("8080",http.FileServer(http.Dir("wwwwroot")))
 
 
 
+io.ReadCloser 接口
+
+- reader 接口
+
+  - []byte 返回 byte 的数量 可选的错误
+
+- closer 接口
+
+  - 返回可选的错误
+
+  
+
+
+
+
+
+## UpLoad
 
 
 
@@ -492,6 +523,184 @@ http.ListenAndServe("8080",http.FileServer(http.Dir("wwwwroot")))
 
 
 
+### Form 表单
+
+
+
+#### 表单发送请求
+
+- html 表单里面的数据以 name-value 对的形式 通过 method 规定post/get请求发送出去
+
+- 数据内容存储在 POST 请求的 Body里面
+
+  - name-value 对的格式 通过表单的`Content Type`指定 `enctype`属性
+
+  - entry 属性默认值 `application/x-www-form-urlcoded` 
+
+  - enrty 属性设置为`multipart/form-data`   (大量数据、上传文件)
+
+    - 每个 name-value 对转换为 MIME消息 每部分各自有 Content Type 和 Content Disposition
+
+    
+
+    
+
+    
+
+- method 属性设置 POST 和 GET
+  - GET 请求没有 Body     数据通过 URL 编码的 name-value 对发送
+
+
+
+#### Form 字段
+
+- Request 上的函数允许我们从 URL 或/和 Body 中提取数据，通过这些字段：
+  - Form  是 url.Values 类型——>type Values map[string]\[]string 类型
+  - PostForm
+  - MultipartForm
+
+- Form 里面的数据是 key-value 对
+
+  - 每个 key 对应一个切片 可以有多个值
+
+- 通常的做法是：
+
+  - 调用 ParseForm 或 ParseMultipartForm 来解析 Request
+  - 相应的访问 Form、PostForm 或 MultipartForm 字段
+
+- ```go
+  func main() {
+  	server:=http.Server {
+  		Addr : "localhost:8080",
+  	}
+  	http.HandleFunc("/process", func(w http.ResponseWriter,r *http.Request){
+  		r.ParseForm() // 解析 request
+  
+  		fmt.Fprintln(w,r.Form)
+  	})
+  	server.ListenAndServe()
+  }
+  
+  // index.html 输出 是一个 map[string][]string
+  // map[first_name:[wo] last_name:[456] uploaded:[Go Web.md]]
+  ```
+
+  
+
+
+
+#### PostForm 字段
+
+只读取表单的 key-value 对 不需读取 url 的 kv 对  使用 PostForm 字段
+
+当 url 和 form 中均有 key对应的 Value 时候 Form 字段显示所有的 values 表单在前 url 在后
+
+```html
+map[first_name:[D] firtst_name:[Nick] last_name:[as]]  // D 为表单 Nick 为 url
+```
+
+- 只支持`"application/x-www-form-urlencoded"` 
+
+```go
+fmt.Fprintln(w,r.PostForm)  // 使用 PostForm字段
+// map[first_name:[qw] last_name:[q]]   只显示表单输入的 key对应的 values
+```
+
+
+
+#### MultipartForm 字段
+
+- 首先调用` ParseMultipartForm ` 方法
+  - 该方法会在必要时调用 `ParseForm `方法
+    - 参数是需要读取数据的长度 字节数
+    - MultipartForm 只包含*表单*的 key-value 对
+    - 返回类型是一个 struct 而不是 map。这个 struct 里有两个 map：
+      - key 是 string，value 是 []string
+      - 空的（key 是 string，value 是文件）
+
+```go
+func main() {
+   server:=http.Server {
+      Addr : "localhost:8080",
+   }
+   http.HandleFunc("/process", func(w http.ResponseWriter,r *http.Request){
+      r.ParseMultipartForm(1024) // 解析 request  使用 ParseMultipartForm 解析 需要传入长度（字节数）
+
+      fmt.Fprintln(w,r.MultipartForm) 
+   })
+   server.ListenAndServe()
+}
+// index 输出  struct 两个 map 第一个有数据第二个是空的
+&{map[first_name:[12] last_name:[12]] map[]}
+```
+
+#### FormValue&PostFormValue 字段
+
+FormValue 方法会返回 Form 字段中指定 key 对应的*第一个 value*
+
+- 无需调用 ParseForm 或 ParseMultipartForm
+
+PostFormValue 方法只能读取 PostForm
+
+- FormValue 和 PostFormValue 都会调用 ParseMultipartForm 方法
+- 表单的 `enctype` 设为 multipart/form-data，无法通过 FormValue 获得想要的值。
+
+
+
+#### 文件 Files
+
+
+
+- 调用 `ParseMultipartForm` 方法
+
+- 从 `File`字段获得 FileHeader 调用 Open 方法获得文件
+
+- 使用`ioutil.ReadAll`函数将文件内容读取到 []byte中
+
+  ```go
+  func process(w http.ResponseWriter, r *http.Request) {
+     r.ParseMultipartForm(1024) // 最大传递字节
+     fileHead := r.MultipartForm.File["uploaded"][0] // 读取指定 body 内容
+     file, err := fileHead.Open()
+     if err == nil {
+        data, err := ioutil.ReadAll(file)
+        if err == nil {
+           fmt.Fprintln(w, string(data))
+        }
+     }
+  }
+  
+  func main() {
+     server := http.Server{
+        Addr: "localhost:8080",
+     }
+     http.HandleFunc("/process", process)
+     server.ListenAndServe()
+  }
+  ```
+
+
+
+
+
+*FormFile*
+
+- 返回对应 Key的第一个文件
+  - 返回指定 Key 的第一个 Value
+
+
+
+#### POST Json
+
+
+
+
+
+#### MultipartReader
+
+```go
+func (r *Request) MultipartReader() (*multipart.Reader, error)
+```
 
 
 
@@ -501,6 +710,193 @@ http.ListenAndServe("8080",http.FileServer(http.Dir("wwwwroot")))
 
 
 
+```go
+type ResponseWriter interface {
+   Header() Header
+
+   Write([]byte) (int, error)
+
+   WriteHeader(statusCode int)
+}
+
+// 是一个接口 response 实现了其内部的所有函数 所以 ResponseWriter 可视为 response 的指针
+```
+
+### ResponseWrite
+
+
+
+
+
+### 内置 Response
+
+- NotFound 函数，包装一个 404 状态码和一个额外的信息
+- ServeFile 函数，从文件系统提供文件，返回给请求者
+- ServeContent 函数，它可以把实现了 io.ReadSeeker 接口的任何东西里面的内容返回给请求者
+- 还可以处理 Range 请求（范围请求），如果只请求了资源的一部分内容，那么 ServeContent 就可以如此响应。而 ServeFile 或 io.Copy 则不行。
+- Redirect 函数，告诉客户端重定向到另一个 URL
+
+
+
+```go
+func process(w http.ResponseWriter, r *http.Request) {
+   r.ParseMultipartForm(1024)                      // 最大传递字节
+   fileHead := r.MultipartForm.File["uploaded"][0] // 读取指定 body 内容
+   file, err := fileHead.Open()
+   if err == nil {
+      data, err := ioutil.ReadAll(file)
+      if err == nil {
+         fmt.Fprintln(w, string(data))
+      }
+   }
+}
+func writeExample(w http.ResponseWriter, r *http.Request) {
+   str := `<html>
+<head><title>Go Web</title></head>
+<body><h1>Hello World</h1></body>
+</html>`
+   w.Write([]byte(str))
+}
+func writeHeaderExampl(w http.ResponseWriter, r *http.Request) {
+   w.WriteHeader(501)
+   fmt.Fprintln(w, "No such service, try next door")
+}
+func main() {
+   server := http.Server{
+      Addr: "localhost:8080",
+   }
+   http.HandleFunc("/write", writeHeaderExampl)
+   http.HandleFunc("/redirect", headerEXample)
+   http.HandleFunc("/json", jsonExample)
+   server.ListenAndServe()
+}
+func headerEXample(w http.ResponseWriter, r *http.Request) {
+   w.Header().Set("Location", "http://google.com")
+   w.WriteHeader(302)
+
+}
+
+type Post struct {
+   User    string
+   Threads []string
+}
+
+func jsonExample(w http.ResponseWriter, r *http.Request) {
+   w.Header().Set("Content-Type", "application/json")
+   post := &Post{
+      User : "wlzhou",
+      Threads: []string {"first","second","third"},
+   }
+   json,_:=json.Marshal(post)
+   w.Write(json)
+}
+```
+
+
+
+
+
+## 模板
+
+Web 模板即为 HTML 页面（预先设置好的）
+
+`text/template` `html/template`模板库
+
+### 模板引擎
+
+合并模板和上下文数据产生 HTML
+
+- 生成 HTML 写入`ResponseWriter` 再加入 HTTP响应返回给客户端
+- ![IG3Raz](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/IG3Raz.png)
+
+
+
+
+
+*ParseFiles*
+
+- 解析模板文件 创建解析好的模板 struct 
+- 是 template struct 上的 ParseFiles 上的方法调用
+
+
+
+创建新的模板 名称为文件名  
+
+``` go
+ t, _ := template.ParseFiles("tmpl.html")
+
+```
+
+
+
+
+
+*ParseGlob*
+
+- 模式匹配  根目录下匹配  
+
+  ``` go
+   t, _ := template.ParseGlob("*.html")
+  ```
+
+  
+
+
+
+
+
+
+
+*Parse*
+
+- 上述两个函数均会调用
+
+
+
+### Action
+
+模板中嵌入的命令 两组花括号之间{{}}
+
+条件 迭代 设置 包含 定义
+
+### 参数、管道、变量
+
+*参数：*
+
+- 模板中的值 
+  - bool 整数 string struct key 变量 方法 
+
+*管道：*
+
+Unix 管道类似
+
+- 把参数输出发送到下一个参数
+- |隔开
+
+
+
+### 函数
+
+内置函数有：
+
+​	define template block html js urlquery 
+
+index print len with
+
+
+
+自定义函数：
+
+``` go
+template.Funcs(funcMap FuncMap) *Template
+
+type FuncMap map[string]interface{}
+
+```
+
+
+
+### 模板组合
 
 
 
@@ -510,6 +906,37 @@ http.ListenAndServe("8080",http.FileServer(http.Dir("wwwwroot")))
 
 
 
+## 路由
+
+Controller
+
+- Main() 设置类工作
+- Controller：
+  - 静态资源
+  - 不同的请求发送给不同的 controller 处理
+
+
+
+
+
+
+
+### 路由参数
+
+- 静态路由：
+  - 一个路径对应一个页面
+    - /home /index
+
+
+
+
+
+
+
+- 带参路由：
+  - 依据路由参数 创建出一族不同的页面
+    - /companies/123
+    - /companies/homeAbout
 
 
 

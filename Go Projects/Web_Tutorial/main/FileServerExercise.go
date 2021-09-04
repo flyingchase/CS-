@@ -1,17 +1,17 @@
 package main
 
-import (
-	"net/http"
-)
-
-func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "wwwroot"+r.URL.Path)
-	})
-
-	http.ListenAndServe(":9090", nil)
-	http.ListenAndServe("8080", http.FileServer(http.Dir("wwwwroot")))
-}
+//func main() {
+//	server:=http.Server {
+//	    Addr : "localhost:8080",
+//	}
+//	http.HandleFunc("/header",func(w http.ResponseWriter,r *http.Request){
+//		fmt.Fprintln(w,r.Header)
+//		fmt.Fprintln(w,r.Header["Accept-Encoding"])
+//		fmt.Fprintln(w,r.Header.Get("Accept-Encoding"))
+//
+//	})
+//	server.ListenAndServe()
+//}
 
 func twosum(nums []int, target int) []int {
 	m := make(map[int]int)
