@@ -495,7 +495,7 @@ whatAmI(Studnet{})
 
 - Buffer channel 带缓存的 channel
 
-  - `ch；=make(chan type,cap)` 在 cap 内的读写是无阻塞的 超过 cap 时候需要等待其他 goroutine 从 channel 中读取元素 释放空间
+  - `ch：=make(chan type,cap)` 在 cap 内的读写是无阻塞的 超过 cap 时候需要等待其他 goroutine 从 channel 中读取元素 释放空间
 
   - `for i:=rang c` 可以不断读取 channel 直到 channel 被显示关闭 
 

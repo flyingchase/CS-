@@ -10,7 +10,6 @@ import (
 - 快速构造 String/Data/JSON/HTML 响应方法
 */
 
-
 // H 为 JSON 数据
 type H map[string]interface{}
 

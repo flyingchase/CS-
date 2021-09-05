@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strings"
 )
-
 type router struct {
 	roots    map[string]*node
 	handlers map[string]HandlerFunc
