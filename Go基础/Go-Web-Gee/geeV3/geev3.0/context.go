@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 )
+
 /*
 - 提供 Query 和 PostFOrm 参数的方法
 - 快速构造 String/Data/JSON/HTML 响应方法
@@ -21,7 +22,7 @@ type Context struct {
 	Path   string
 	Method string
 
-	Params map[string] string
+	Params     map[string]string
 	StatusCode int
 }
 
@@ -57,15 +58,15 @@ func (c *Context) String(code int, format string, value ...interface{}) {
 	c.SetHeader("Content-type", "text/plain")
 	c.Status(code)
 	// 类似 format——> %c char
-	c.Writer.Write([]byte(fmt.Sprintf(format,value ...)))
+	c.Writer.Write([]byte(fmt.Sprintf(format, value...)))
 }
 
 func (c *Context) JSON(code int, obj interface{}) {
-	c.SetHeader("Content-Type","application/json")
+	c.SetHeader("Content-Type", "application/json")
 	c.Status(code)
-	encoder:=json.NewEncoder(c.Writer)
-	if err := encoder.Encode(obj);err != nil {
-		http.Error(c.Writer,err.Error(),500)
+	encoder := json.NewEncoder(c.Writer)
+	if err := encoder.Encode(obj); err != nil {
+		http.Error(c.Writer, err.Error(), 500)
 	}
 }
 
@@ -73,13 +74,13 @@ func (c *Context) Data(code int, data []byte) {
 	c.Status(code)
 	c.Writer.Write(data)
 }
-func (c *Context)HTML(code int, html string)  {
-	c.SetHeader("Content-Type","application/html")
+func (c *Context) HTML(code int, html string) {
+	c.SetHeader("Content-Type", "application/html")
 	c.Status(code)
 	c.Writer.Write([]byte(html))
 }
 
 func (c *Context) Param(key string) string {
-	value,_:=c.Params[key]
+	value, _ := c.Params[key]
 	return value
 }

@@ -3,11 +3,10 @@ package geev3_0
 import (
 	"log"
 	"net/http"
-	)
+)
 
 // define HandlerFunc from w r to context
 type HandlerFunc func(c *Context)
-
 
 // Engine实现 ServeHTTP 接口
 type Engine struct {
@@ -24,12 +23,14 @@ func (engine *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func New() *Engine {
 	return &Engine{router: newRouter()}
 }
+
 // 使用 router 的 addRoute方法
 func (engine *Engine) addRoute(method string, pattern string, handler HandlerFunc) {
 	log.Printf("Route %4s - %s", method, pattern)
-	engine.router.addRoute(method,pattern,handler)
+	engine.router.addRoute(method, pattern, handler)
 
 }
+
 // 调用 addRoute方法
 func (engine *Engine) GET(pattern string, handler HandlerFunc) {
 	engine.addRoute("GET", pattern, handler)

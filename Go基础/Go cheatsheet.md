@@ -452,8 +452,9 @@ whatAmI(Studnet{})
 
 ## Concurrency
 
-- 通过通信来共享而非通过共享来通信
+- 通过通信来共享而非通过共享来通信 并发模型采用 CSP communicating Seqyential process
 - goroutine 运行在相同的地址空间
+- 底层也是通过共享内存的加锁来实现  抽象级别层级更高
 
 #### channel
 
@@ -561,6 +562,72 @@ whatAmI(Studnet{})
        fibonacc(c,quit)
     }
     ```
+
+  ##### channel 通信
+
+  ```go
+  func testAppendA(t *testing.T) {
+     x := []int{1, 2, 3}
+     appendA(x)
+     fmt.Printf("main %v\n", x)
+  }
+  
+  func appendA(x []int) {
+     x[0] = 100
+     fmt.Printf("appendA %v\n", x)
+  }
+  func main() {
+     ch := make(chan struct{})
+  
+     go func() {
+        for i := 1; i < 11; i++ {
+           ch <- struct{}{}
+           if i%2 == 1 {
+              fmt.Println("奇数", i)
+           }
+        }
+     }()
+     go func() {
+        for i := 0; i < 11; i++ {
+           <-ch
+           if i%2 == 0 {
+              fmt.Println("偶数", i)
+           }
+        }
+     }()
+     time.Sleep(10 * time.Second)
+  }
+  ```
+
+
+
+
+
+##### 广播通信
+
+```go
+func main() {
+   notify := make(chan struct{})
+
+   for i := 0; i < 10; i++ {
+      go func(i int) {
+         for {
+            select {
+            case <-notify:
+               fmt.Println("done...", i)
+            case <-time.After(1 * time.Second):
+               fmt.Println("wait notify", i)
+            }
+         }
+      }(i)
+   }
+   time.Sleep(1 * time.Second)
+   close(notify)
+   time.Sleep(3 * time.Second)
+}
+```
+
+
 
 - `Goexit` 
   - 退出当前 Goroutine 但defer 仍调用

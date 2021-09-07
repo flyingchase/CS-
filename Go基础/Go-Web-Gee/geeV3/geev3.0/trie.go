@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 )
+
 /*
 前缀树 Trie 树实现动态路由
 - 每个节点的所有子节点有相同的前缀
@@ -12,18 +13,19 @@ import (
 */
 type node struct {
 	// 待匹配路由
-	pattern  string
+	pattern string
 	// 路由中的部分字段
-	part     string
+	part string
 	// 子节点
 	children []*node
 	// 是否精准匹配
-	isWild   bool
+	isWild bool
 }
 
 func (n *node) String() string {
 	return fmt.Sprintf("node{pattern = %s,part = %s, isWild = %t\n}", n.pattern, n.part, n.isWild)
 }
+
 // 注册路由规则 映射 handler
 func (n *node) insert(pattern string, parts []string, height int) {
 	if len(parts) == height {
@@ -38,39 +40,41 @@ func (n *node) insert(pattern string, parts []string, height int) {
 	}
 	child.insert(pattern, parts, height+1)
 }
+
 // 首个匹配成功的结点
 func (n *node) matchChild(part string) *node {
-	for _,child:=range n.children{
-		if child.part==part||child.isWild {
+	for _, child := range n.children {
+		if child.part == part || child.isWild {
 			return child
 		}
 	}
 	return nil
 }
-func (n *node)search(parts []string,height int) *node {
-	if len(parts) == height||strings.HasPrefix(n.part,"*") {
-		if n.pattern=="" {
+func (n *node) search(parts []string, height int) *node {
+	if len(parts) == height || strings.HasPrefix(n.part, "*") {
+		if n.pattern == "" {
 			return nil
 		}
 		return n
 	}
-	part:=parts[height]
-	children:=n.matchChildren(part)
+	part := parts[height]
+	children := n.matchChildren(part)
 
 	for _, child := range children {
-	    res:=child.search(parts,height+1)
+		res := child.search(parts, height+1)
 		if res != nil {
 			return res
 		}
 	}
 	return nil
 }
+
 // 所有匹配成功的结点 查找
 func (n *node) matchChildren(part string) []*node {
-	nodes:=make([]*node,0)
+	nodes := make([]*node, 0)
 	for _, child := range n.children {
-		if child.part==part||child.isWild {
-			nodes=append(nodes,child)
+		if child.part == part || child.isWild {
+			nodes = append(nodes, child)
 		}
 	}
 	return nodes
@@ -78,11 +82,9 @@ func (n *node) matchChildren(part string) []*node {
 
 func (n *node) travel(list *([]*node)) {
 	if n.pattern != "" {
-		*list=append(*list,n)
+		*list = append(*list, n)
 	}
 	for _, child := range n.children {
-	    child.travel(list)
+		child.travel(list)
 	}
 }
-
-
