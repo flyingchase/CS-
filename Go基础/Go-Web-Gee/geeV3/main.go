@@ -1,7 +1,7 @@
 package main
 
 import (
-	geev3_0 "Web-tutorial/geeV3/geev3.0"
+	geev3_0 "geeV3/geev3.0"
 	"net/http"
 )
 
