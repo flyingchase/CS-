@@ -34,6 +34,50 @@ func TestMiniDB_Put(t *testing.T) {
 		t.Log(err)
 	}
 }
+func heapsort(nums []int) {
+	if len(nums) == 0 {
+		return
+	}
+
+	for i := 0; i < len(nums); i++ {
+		heapInsert(nums, i)
+	}
+	size := len(nums)
+	for size > 0 {
+		size--
+		nums[0], nums[size] = nums[size], nums[0]
+		heapIfyNow(nums, 0, size)
+	}
+
+}
+func heapInsert(nums []int, index int) {
+	for 2*index-1 >= 0 && nums[index] > nums[2*index-1] {
+		nums[index], nums[index*2-1] = nums[index*2-1], nums[index]
+		index = 2*index - 1
+	}
+}
+
+func heapIfyNow(nums []int, index int, size int) {
+	left, right := index*2+1, 2*index+2
+	for left < size {
+		var largest int
+		if right < size && nums[right] > nums[left] {
+			largest = right
+
+		}
+		if nums[largest] < nums[index] {
+			largest = index
+		}
+		if index == largest {
+			break
+		}
+		nums[index], nums[largest] = nums[largest], nums[index]
+		index = largest
+		left = index*2 + 1
+		right = index*2 + 2
+	}
+
+}
 
 func TestMiniDB_Get(t *testing.T) {
 	db, err := Open("/tmp/minidb")
