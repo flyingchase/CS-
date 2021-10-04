@@ -92,8 +92,8 @@ func threeSum(nums []int) [][]int {
 		for l < r {
 			sum := nums[i] + nums[l] + nums[r]
 			if sum == 0 {
-				lists:=make([]int,0)
-				lists=append(lists,nums[i],nums[l],nums[r])
+				lists := make([]int, 0)
+				lists = append(lists, nums[i], nums[l], nums[r])
 				res = append(res, lists)
 				for l < r && nums[l] == nums[l+1] {
 					l++
@@ -103,10 +103,10 @@ func threeSum(nums []int) [][]int {
 				}
 				l++
 				r--
-			}else if sum>0 {
+			} else if sum > 0 {
 				r--
-			}else {
-			    l++
+			} else {
+				l++
 			}
 
 		}
