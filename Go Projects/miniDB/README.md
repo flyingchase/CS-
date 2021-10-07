@@ -117,6 +117,26 @@ Mutex锁的模式分类 and Mutex 锁底层实现
 
 
 
+## 数据类型
+
+String List Hash Set ZSet
+
+
+
+### List 操作
+
+LPush/Pop RPop/Push Insert Trim
+
+
+
+### Hash operations
+
+
+
+
+
+
+
 
 
 

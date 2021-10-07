@@ -58,38 +58,38 @@ type element struct {
 }
 type PriorityQueue []element
 
-func (pq PriorityQueue)Less(i,j int) bool  {
-	return pq[i].count>pq[j].count
+func (pq PriorityQueue) Less(i, j int) bool {
+	return pq[i].count > pq[j].count
 }
-func (pq PriorityQueue) Swap(i,j int)  {
-	pq[i],pq[j] = pq[j],pq[i]
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
 }
-func (pq PriorityQueue)Len() int {
+func (pq PriorityQueue) Len() int {
 	return len(pq)
 }
-func (pq *PriorityQueue) Push(x interface{})  {
-	*pq = append(* pq,x.(element))
+func (pq *PriorityQueue) Push(x interface{}) {
+	*pq = append(* pq, x.(element))
 }
-func (pq *PriorityQueue)Pop()interface{}  {
+func (pq *PriorityQueue) Pop() interface{} {
 	old := * pq
-	top:=old[len(old)-1]
-	*pq=old[:len(old)-1]
+	top := old[len(old)-1]
+	*pq = old[:len(old)-1]
 	return top
 }
 func topKFrequent(nums []int, k int) []int {
-	m:=map[int] int {}
-	for _,v:=range nums {
-		m[v]+=1
+	m := map[int]int{}
+	for _, v := range nums {
+		m[v] += 1
 
 	}
-	pq:=&PriorityQueue{}
+	pq := &PriorityQueue{}
 	heap.Init(pq)
-	for k,v:=range m{
-		heap.Push(pq,element{k, v})
+	for k, v := range m {
+		heap.Push(pq, element{k, v})
 	}
-	res:=make([]int,0)
-	for i:=0;i<k;i++{
-		res=append(res,heap.Pop(pq).(element).value)
+	res := make([]int, 0)
+	for i := 0; i < k; i++ {
+		res = append(res, heap.Pop(pq).(element).value)
 	}
 	return res
 }

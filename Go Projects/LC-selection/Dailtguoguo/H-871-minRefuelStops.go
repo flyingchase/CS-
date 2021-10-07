@@ -1,23 +1,23 @@
-package main
+package Dailyguoguo
 
 import "container/heap"
 
-type maxHeap []int
+type maxHeap871 []int
 
-func (h maxHeap) Len() int {
+func (h maxHeap871) Len() int {
 	return len(h)
 }
-func (h maxHeap) Swap(i, j int) {
+func (h maxHeap871) Swap(i, j int) {
 
 	h[i], h[j] = h[j], h[i]
 }
-func (h maxHeap) Less(i, j int) bool {
+func (h maxHeap871) Less(i, j int) bool {
 	return h[i] > h[j]
 }
-func (h *maxHeap) Push(x interface{}) {
+func (h *maxHeap871) Push(x interface{}) {
 	*h = append(*h, x.(int))
 }
-func (h *maxHeap) Pop() interface{} {
+func (h *maxHeap871) Pop() interface{} {
 	old := *h
 	x := old[len(old)-1]
 	*h = old[:len(old)-1]
@@ -26,7 +26,7 @@ func (h *maxHeap) Pop() interface{} {
 
 func minRefuelStops(target int, startFuel int, stations [][]int) int {
 
-	h, pos, count := new(maxHeap), 0, 0
+	h, pos, count := new(maxHeap871), 0, 0
 	tryFulUplRetrospectively := func(distance int) bool {
 		fuel := distance
 		for fuel < 0 && h.Len() > 0 {
