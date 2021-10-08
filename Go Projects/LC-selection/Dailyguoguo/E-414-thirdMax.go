@@ -14,7 +14,7 @@ func thirdMax(nums []int) int {
 		set[num] = true
 		windows = append(windows, num)
 		sort.Ints(windows)
-		if len(indows) > 3 {
+		if len(windows) > 3 {
 			windows = windows[1:]
 		}
 	}

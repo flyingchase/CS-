@@ -72,7 +72,7 @@ func (h IntHeap) Less(i, j int) bool {
 func (h *IntHeap) Push(x interface{}) {
 	*h = append(*h, x.(int))
 }
-func (h *IntHeap) Pop() (val interface) {
+func (h *IntHeap) Pop() (val interface{}) {
 	old := *h
 	val = old[:len(old)-1]
 	*h = old[:len(old)-1]

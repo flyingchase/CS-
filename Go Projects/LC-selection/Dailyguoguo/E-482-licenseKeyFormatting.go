@@ -5,7 +5,6 @@ import (
 )
 
 func licenseKeyFormatting(s string, k int) string {
-
 	s = strings.Replace(s, "-", "", -1)
 	n, counter, res := len(s), 0, ""
 	for i := n - 1; i >= 0; i-- {
@@ -29,9 +28,8 @@ func liceseKeyFormatting2(s string, k int) string {
 		res = append(res, s[0:left])
 	}
 	for i := left; i < n; i += k {
-		res = append(res,s[i : i+k])
+		res = append(res, s[i:i+k])
 	}
 	ans := strings.Join(res, "-")
 	return ans
-
 }

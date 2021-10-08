@@ -24,7 +24,7 @@ func fractionToDecimal(numerator int, denominator int) string {
 	data := make(map[int]int)
 	data[numerator] = len(res)
 	for numerator != 0 {
-		// 注意每次除完,numerator需要*1f
+		// 注意每次除完,numerator需要*10
 		numerator *= 10
 		res += strconv.Itoa(numerator / denominator)
 		numerator %= denominator
