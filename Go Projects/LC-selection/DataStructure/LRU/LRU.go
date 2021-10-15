@@ -10,8 +10,7 @@ import "fmt"
 type Node struct {
 	prev, next *Node
 	// 代表当前 LRU 的归属
-	list *LRU
-
+	list  *LRU
 	key   string
 	value interface{}
 }
@@ -62,7 +61,6 @@ func (l *LRU) get(key string) *Node {
 
 // 将 key 构造为结点插入头部,若存在对应的 key 则更新结点值
 // 缓存满则删掉最后结点(LRU)最少使用
-
 func (l *LRU) Put(key string, value interface{}) {
 	defer l.debug()
 	n := l.get(key)
