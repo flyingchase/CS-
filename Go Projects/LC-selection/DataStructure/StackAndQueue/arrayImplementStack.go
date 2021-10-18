@@ -1,4 +1,4 @@
-package SelfStack
+package StackAndQueue
 
 // 数组实现使用 slice 借助 slice 实现自动扩容
 type StackWithArray struct {

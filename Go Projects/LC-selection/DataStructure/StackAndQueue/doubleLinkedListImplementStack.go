@@ -1,4 +1,4 @@
-package SelfStack
+package StackAndQueue
 
 // 链式栈 使用双向链表实现
 type (

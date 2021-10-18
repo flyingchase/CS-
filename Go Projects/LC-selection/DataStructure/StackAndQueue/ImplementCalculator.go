@@ -1,4 +1,4 @@
-package SelfStack
+package StackAndQueue
 
 import (
 	"fmt"
