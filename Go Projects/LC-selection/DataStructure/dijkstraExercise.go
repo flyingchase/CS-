@@ -24,7 +24,7 @@ package DataStructure
 //
 // 	for v := 0; v < len(graph); v++ {
 // 		shortestPath[v] = graph[0][v]
-// 	
+//
 // 	fmt.Println("shortestTablePath is : ", shortestPath)
 // }
 // func NewGraph() [MAXVEX][MAXVEX]int {

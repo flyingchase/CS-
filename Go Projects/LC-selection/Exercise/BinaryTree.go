@@ -1,4 +1,4 @@
-package Exercise
+package main
 
 import (
 	"LC-selection/DataStructure"
@@ -240,142 +240,85 @@ func Merge(left []int, right []int) (res []int) {
 }
 
 // use divide in quicksort
-func quicksortOld(nums []int) []int  {
-	return quicksortOldHelper(nums,0,len(nums)-1)
+func quicksortOld(nums []int) []int {
+	return quicksortOldHelper(nums, 0, len(nums)-1)
 }
 
 func quicksortOldHelper(nums []int, l int, r int) []int {
-	if l>=r {
+	if l >= r {
 		return nums
 	}
-	nums[l],nums[r]=nums[r],nums[l]
-	p:=partitionOld(nums,l,r)
-	quicksortOldHelper(nums,l,p[0]-1)
-	quicksortOldHelper(nums,p[1]+1,r)
+	nums[l], nums[r] = nums[r], nums[l]
+	p := partitionOld(nums, l, r)
+	quicksortOldHelper(nums, l, p[0]-1)
+	quicksortOldHelper(nums, p[1]+1, r)
 	return nums
 }
 
 func partitionOld(nums []int, l int, r int) []int {
 
-	less,more:=l-1,r
+	less, more := l-1, r
 	for l < more {
-		if nums[l]<nums[r] {
+		if nums[l] < nums[r] {
 			less++
 			nums[l], nums[less] = nums[less], nums[l]
 			l++
-		}else if nums[l] <nums[r] {
+		} else if nums[l] < nums[r] {
 			more--
-			nums[l],nums[more]=nums[more],nums[l]
-		}else {
-		    l++
+			nums[l], nums[more] = nums[more], nums[l]
+		} else {
+			l++
 		}
 	}
-	nums[r],nums[more]=nums[more],nums[r]
-	return []int {less+1,more}
+	nums[r], nums[more] = nums[more], nums[r]
+	return []int{less + 1, more}
 }
-func QucikSort(nums []int) []int  {
-	quickSortHelper(nums,0,len(nums)-1)
+func QucikSort(nums []int) []int {
+	quickSortHelper(nums, 0, len(nums)-1)
 	return nums
 }
 
 func quickSortHelper(nums []int, l int, r int) {
-	if l<r {
+	if l < r {
 		// divide
-		pivot:=partition(nums,l,r)
-		quickSortHelper(nums,0,pivot-1)
-		quickSortHelper(nums,pivot+1,r)
+		pivot := partition(nums, l, r)
+		quickSortHelper(nums, 0, pivot-1)
+		quickSortHelper(nums, pivot+1, r)
 	}
 }
 
 func partition(nums []int, l int, r int) int {
-	p,i:=nums[r],l
-	for j:=l;j<r;j++ {
-		if nums[j]<p {
-			nums[j],nums[p]=nums[p],nums[j]
+	p, i := nums[r], l
+	for j := l; j < r; j++ {
+		if nums[j] < p {
+			nums[j], nums[p] = nums[p], nums[j]
 			j++
 		}
 	}
 	// pivot update
-	nums[i],nums[r]=nums[r],nums[i]
+	nums[i], nums[r] = nums[r], nums[i]
 	return i
 }
-func postorderTraversal(root *TreeNode)[]int  {
-	if root==nil {
+func postorderTraversal(root *TreeNode) []int {
+	if root == nil {
 		return []int{}
 	}
-	stack:=make([]*TreeNode,0)
-	cur:=root
-	res:=make([]int,0)
-	for cur != nil||len(stack)!=0 {
-		for cur!=nil {
-			stack=append(stack, cur)
-			res = append(res,cur.Val)
-			cur=cur.Right
+	stack := make([]*TreeNode, 0)
+	cur := root
+	res := make([]int, 0)
+	for cur != nil || len(stack) != 0 {
+		for cur != nil {
+			stack = append(stack, cur)
+			res = append(res, cur.Val)
+			cur = cur.Right
 		}
-		node:=stack[len(stack)-1]
+		node := stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
-		cur=node.Left
+		cur = node.Left
 	}
-	size:=len(res)
-	for i:=0;i<size;i++ {
-		res=append(res,res[size-i-1])
+	size := len(res)
+	for i := 0; i < size; i++ {
+		res = append(res, res[size-i-1])
 	}
 	return res[size:]
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

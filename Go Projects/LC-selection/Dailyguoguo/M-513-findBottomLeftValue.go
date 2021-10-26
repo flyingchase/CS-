@@ -1,7 +1,5 @@
 package Dailyguoguo
 
-import "math"
-
 func findBottomLeftValue(root *TreeNode) int {
 	if root == nil {
 		return -1
@@ -10,8 +8,6 @@ func findBottomLeftValue(root *TreeNode) int {
 	cur := root
 	queue = append(queue, cur)
 	res := make([][]int, 0)
-	maxDeepth:=math.MinInt32
-	deepth:=0
 	for len(queue) > 0 {
 		lists := make([]int, 0)
 		size := len(queue)

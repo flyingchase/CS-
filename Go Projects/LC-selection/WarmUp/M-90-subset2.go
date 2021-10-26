@@ -21,10 +21,10 @@ func dfsSubset2(res *[][]int, lists []int, index int, nums []int) {
 	// 避免三句代码 使用 temp
 	for i := index; i < len(nums); i++ {
 		lists = append(lists, nums[i])
+		if i > index && nums[i] == nums[i-1] {
+			continue
+		}
+		dfsSubset2(res, lists, i+1, nums)
+		lists = lists[:len(lists)-1]
 	}
-	if i > index && nums[i] == nums[i-1] {
-		continue
-	}
-	dfsSubset2(res, lists, i+1, nums)
-	lists = lists[:len(lists)-1]
 }

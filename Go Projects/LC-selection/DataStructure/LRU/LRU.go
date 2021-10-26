@@ -48,7 +48,7 @@ func (l *LRU) get(key string) *Node {
 		if n.key == key {
 			n.prev.next = n.next
 			n.next.prev = n.prev
-
+			// 查找到后移至队首
 			n.next = l.root.next
 			l.root.next.prev = n
 			l.root.next = n

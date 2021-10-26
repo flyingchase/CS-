@@ -6,4 +6,4 @@ func (i Binary) String() string {
 }
 func conversion() {
 	var b String
-};lq
+}

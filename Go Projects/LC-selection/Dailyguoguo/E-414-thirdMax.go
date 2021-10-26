@@ -23,3 +23,13 @@ func thirdMax(nums []int) int {
 	}
 	return windows[0]
 }
+
+type hello struct {
+	value int
+	count []int
+}
+
+func (h hello) Len() int {
+
+	return len(h.count)
+}

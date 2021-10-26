@@ -39,3 +39,16 @@ func min931(j int, i int) int {
 	}
 	return i
 }
+func heapsort(nums []int)  {
+    if len(nums)==0 {
+        return
+    }
+    heapsortHelper(nums,0,len(nums)-1)
+}
+func heapsortHelper(nums []int,l,r int)  {
+    if l<r {
+        return
+    }
+    :G
+    
+}
