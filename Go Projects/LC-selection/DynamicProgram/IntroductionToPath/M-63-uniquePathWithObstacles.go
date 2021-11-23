@@ -1,5 +1,0 @@
-package IntroductionToPath
-
-func uniquePathsWithObstacles() {
-}
-
