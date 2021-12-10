@@ -12,9 +12,7 @@
 
    
 
-## 检索数据
-
-### 单一表检索数据
+## 单一表检索数据
 
 ``` sql	
 USE sql_store;
@@ -61,6 +59,177 @@ SELECT
 **比较操作符**
 
 ``` sql
-<,>,<=,>=,<>,!=
+<,>,<=,>=,<>,!=,=
 ```
+
+**筛选**
+
+`AND` `OR` `NOT`
+
+1. `AND` 优先级最高
+2. `NOT`表示取反
+
+**多表达式`IN`：**
+
+符合的多个条件内
+
+``` sqlite
+SELECT *
+FROM customers
+WHERE state NOT IN('va','fl','ga')
+```
+
+**检索`BETWEEN`**
+
+``` sql	
+SELECT *
+FROM customers
+WHERE points BETWEEN 1000 AND 3000
+```
+
+**检索 `LIKE`**
+
+与使用正则表达式`REGEXP`相同效果
+
+``` sql
+SELECT *
+FROM customers
+WHERE last_name LIKE '%b%'
+-- %代表任意字符
+-- _下划线代表一个字符 '_y' means 以 y 结尾的两个字符
+where last_name regexp 'b'
+```
+
+
+
+**`REGEXP`正则表达式**
+
+`^`起始位置 `|`表示逻辑或 `$`表示末尾位置 `[]`代表多个匹配
+
+
+
+### Order by 排序
+
+默认升序，使用`DESC`作为降序
+
+### 限制查询记录的返回条数
+
+`LIMIT *,*` 第一个数字代表跳过的记录数，第二个数字代表现实的内容条数，第一个数字可忽略
+
+**`LIMIT`写在最后**
+
+
+
+
+
+
+
+
+
+## 多表检索
+
+找到多个表的公共列 `ON`  `JOIN`
+
+``` sql
+SELECT *
+FROM orders
+JOIN customers 
+	on customers.customer_id=orders.customer_id
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
