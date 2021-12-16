@@ -128,28 +128,42 @@ where last_name regexp 'b'
 
 ## 多表检索
 
-找到多个表的公共列 `ON`  `JOIN`
+找到多个表的公共列 `ON`  `JOIN` 找到公共列
 
 ``` sql
-SELECT *
-FROM orders
-JOIN customers 
-	on customers.customer_id=orders.customer_id
+SELECT order_id,o.customer_id,first_name,last_name
+FROM orders o
+JOIN customers c 
+	ON o.customer_id=c.customer_id 
 ```
 
 
 
+默认为内连接，多个表合并时，只返回符合条件的记录
+
+左右链接：满足左右两侧的均列出
+
+``` sql
+SELECT 
+	p.product_id,
+	p.`name`,
+	oi.quantity
+FROM products p
+LEFT JOIN  order_items oi 
+	on p.product_id=oi.product_id
+```
 
 
 
+## 复合合并的条件
+
+减少使用`where`作为隐式合并
 
 
 
+### using
 
-
-
-
-
+当不同的表内的字段列名相同时使用`using`而非`on`
 
 
 
