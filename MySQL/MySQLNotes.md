@@ -289,6 +289,21 @@ InnoDB 中的B+树中每个节点都是一个数据页
 
 
 
+InnoDB引擎的表文件，一共有两个：
+
+- *.frm 这类文件是表的定义文件。
+- *.ibd 这类文件是数据和索引存储文件。表数据和索引聚集存储，通过索引能直接查询到数据。
+
+MyIASM引擎的表文件，一共有三个：
+
+- *.frm 这类文件是表的定义文件。
+- *.MYD 这类文件是表数据文件，表中的所有数据都保存在此文件中。
+- *.MYI 这类文件是表的索引文件，MyISAM存储引擎的索引数据单独存储。
+
+MyISAM存储引擎在存储索引的时候，是将索引数据单独存储，并且索引的B+Tree最终指向的是数据存在的物理地址，而不是具体的数据。然后再根据物理地址去数据文件（*.MYD）中找到具体的数据。
+
+
+
 ### 聚集索引和非聚集索引（二级索引）
 
 区别在于叶子结点存放的数据：
@@ -383,6 +398,63 @@ InnoDB 的数据是按「数据页」为单位来读写的，默认数据页大�
 
 
 
+## InnoDB 存储结构
+
+![yjsHVX](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/yjsHVX.png)
+
+表空间、段segement、区/块extent、页page
+
+
+
+
+
+### 块extent
+
+分配 64 个连续的 page 大小为64*16kb=1Mb
+
+### 页page
+
+是磁盘管理的最小单位，可通过`innodb_page-size`设定大小
+
+<img src="/Users/qlzhou/Library/Application Support/typora-user-images/image-20220308155801410.png" alt="image-20220308155801410" style="zoom:33%;" />
+
+
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/DveXN1.png" alt="DveXN1" style="zoom: 50%;" />
+
+
+
+可分为通用部分（文件头、文件尾）、存储记录空间、索引部分
+
+
+
+头文件中的`fil-page-prev`和`fil-page-next`作为指针指向抢一个页面和下一个数据页，构成逻辑上双向链表
+
+
+
+### row 行
+
+innodb 按照行存放数据，最多存放16 Kb/2-200=7992行
+
+
+
+
+
+
+
+### 快照读实现
+
+MVCC+undo log，发生在 select 操作，但不包括`select ... lock the mode/select ..for update`（当前读）
+
+
+
+
+
+
+
+### MVCC 实现
+
+基于 undolog ，通过回滚字段保存 undo log 记录版本快照数据，通过 readview 确定数据的可见性，通过 purege线程基于 readview 清理旧版本数据。
 
 
 
@@ -392,16 +464,20 @@ InnoDB 的数据是按「数据页」为单位来读写的，默认数据页大�
 
 
 
+### readview 可见性判断
 
+|        字段        |                        含义                        |
+| :----------------: | :------------------------------------------------: |
+| **creator_trx_id** |                创建该视图的事务 ID                 |
+|    **trx_ids**     | 创建 ReadView 时，活跃的读写事务 ID 数组，有序存储 |
+|  **low_limit_id**  |               设置为当前最大事务 ID                |
+|  **up_limit_id**   |                m_ids 集合中的最小值                |
 
+在 rc、rr 隔离级别下开始事务会生成 readview 快照，select 查询语句时候会依据数据的`trx_id`和`readview`中数据进行可见性比对：
 
-
-
-
-
-
-
-
+- 如果记录行的`trx_id`小于`read_view_t::up_limit_id`，则说明该事务在创建 ReadView 时已经提交了，肯定可见
+- 如果记录行的`trx_id`大于等于`read_view_t::m_low_limit_id`，则说明该事务是创建 readview 之后开启的，肯定不可见
+- 当`trx_id`在`up_limit_id`和`low_limit_id`之间，并且在`read_view_t::trx_ids`数组中，则说明创建 readview 时该事务是活跃的，其数据变更对当前视图不可见，如果不在活跃事务列表`trx_ids`中则对该`trx_id`的变更可见
 
 
 

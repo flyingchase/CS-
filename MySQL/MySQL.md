@@ -25,7 +25,6 @@ DROP DATABASE IF EXISTS tmall;
 CREATE DATABASE tmall DEFAULT CHARACTER SET utf8;
 # 使用该数据库
 use sqlName;
-
 ```
 
 
