@@ -442,9 +442,11 @@ innodb 按照行存放数据，最多存放16 Kb/2-200=7992行
 
 
 
-### 快照读实现
+### 快照读实现 
 
 MVCC+undo log，发生在 select 操作，但不包括`select ... lock the mode/select ..for update`（当前读）
+
+不加锁的 select 即为快照读，隔离级别不是为提交读和串行化（未提交读读的是最新数据，而）
 
 
 
